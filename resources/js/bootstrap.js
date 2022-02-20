@@ -7,8 +7,23 @@ window._ = require('lodash');
  */
 
 window.axios = require('axios');
-
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.withCredentials = true;
+window.axios.interceptors.request.use(
+	(config) => {
+		const token = localStorage.getItem('jwt');
+		if (token) {
+			config.headers['Authorization'] = 'Bearer ' + token;
+		}
+		return config;
+	},
+	(error) => {
+		if (error.response.status === 401) {
+			axios.post('/logout').finally(() => window.location.replace('/'));
+		}
+		Promise.reject(error);
+	}
+);
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
