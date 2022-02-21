@@ -20,4 +20,4 @@ install npm packages & compile resources
 `npm install && npm run dev`
 
 start Laravel's local development server using the Artisan CLI's serve command:
-`php artisan serve'
+`php artisan serve`
