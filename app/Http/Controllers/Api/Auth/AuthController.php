@@ -36,6 +36,6 @@ class AuthController extends Controller
     {
         $request->user()->currentAccessToken()->delete();
         
-        return new UserResource($request->user());
+        return response()->json();
     }
 }

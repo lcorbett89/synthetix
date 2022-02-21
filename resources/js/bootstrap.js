@@ -1,3 +1,5 @@
+const { default: store } = require("./store");
+
 window._ = require("lodash");
 
 /**
@@ -28,9 +30,11 @@ window.axios.interceptors.response.use(
     (error) => {
         if (error.response && error.response.data) {
             if (error.response.status === 401) {
-                axios
-                    .post("/api/logout")
-                    .finally(() => window.location.replace("/login"));
+                if (!error.request.responseURL.endsWith("logout")) {
+                    store
+                        .dispatch("logout")
+                        .finally(() => window.location.replace("/login"));
+                }
             }
             return Promise.reject(error.response.data);
         }

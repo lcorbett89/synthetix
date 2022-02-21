@@ -43,7 +43,7 @@ export default createStore({
                     return state.user;
                 });
         },
-        me({ state, commit }, userCredentials) {
+        me({ state, commit }) {
             return axios
                 .get("/api/me")
                 .then((response) => {
@@ -53,16 +53,16 @@ export default createStore({
                 .catch((error) => {
                     commit("setToken", null);
                     commit("setUser", null);
-                    return error;
+
+                    return Promise.reject(error);
                 });
         },
         logout({ commit }) {
             return axios.post("/api/logout").finally((response) => {
-                commit("setToken");
-                commit("setUser");
+                commit("setToken", null);
+                commit("setUser", null);
+                commit("setJokes", []);
                 commit("setJokesToVoteOn", []);
-
-                return true;
             });
         },
 
@@ -84,13 +84,11 @@ export default createStore({
             });
         },
 
-        voteOnJoke({ state, commit }, jokeId) {
-            return axios.post(`/api/jokes/${jokeId}/vote`).then((response) => {
-                return response;
-            });
+        voteOnJoke({}, jokeId) {
+            return axios.post(`/api/jokes/${jokeId}/vote`);
         },
 
-        submitJoke({ state, commit }, joke) {
+        submitJoke({}, joke) {
             return axios.post(`/api/jokes`, joke);
         },
     },

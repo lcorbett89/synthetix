@@ -70,23 +70,29 @@ export default {
         },
     },
     methods: {
+        getJokes() {
+            this.$store
+                .dispatch("getJokes", {})
+                .catch((error) => console.log(error));
+        },
         getJokesToVote() {
             this.finishedFetchingVotes = false;
 
             this.$store
                 .dispatch("getJokesToVote")
+                .catch((error) => console.log(error))
                 .finally(() => (this.finishedFetchingVotes = true));
         },
         voted() {
             // refresh jokes
-            this.$store.dispatch("getJokes", {});
+            this.getJokes();
 
             // get 2 more jokes
             this.getJokesToVote();
         },
     },
     mounted() {
-        this.$store.dispatch("getJokes", {});
+        this.getJokes();
 
         if (!this.jokesToVoteOn.length) {
             this.getJokesToVote();

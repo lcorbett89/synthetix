@@ -21,7 +21,9 @@ export default {
         },
     },
     mounted() {
-        this.$store.dispatch("getJokes", {});
+        this.$store
+            .dispatch("getJokes", {})
+            .catch((error) => console.log(error));
     },
 };
 </script>

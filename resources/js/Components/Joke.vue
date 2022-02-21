@@ -66,9 +66,12 @@ export default {
     },
     methods: {
         voteOnThisJoke() {
-            this.$store.dispatch("voteOnJoke", this.joke.id).then(() => {
-                this.$emit("voted");
-            });
+            this.$store
+                .dispatch("voteOnJoke", this.joke.id)
+                .then(() => {
+                    this.$emit("voted");
+                })
+                .catch((error) => console.log(error));
         },
     },
 };
