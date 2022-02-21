@@ -32,6 +32,10 @@
                     </div>
                 </div>
 
+                <div v-show="error">
+                    <p class="text-red-600 text-sm">{{ error }}</p>
+                </div>
+
                 <div>
                     <Button
                         type="submit"
@@ -71,7 +75,7 @@ export default {
                         this.$router.push({ name: "vote" });
                     })
                     .catch((errors) => {
-                        this.errors = errors;
+                        this.error = errors.message;
                     });
             }
         },
