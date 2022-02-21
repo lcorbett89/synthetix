@@ -6,7 +6,7 @@ use App\Models\Joke;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
 
-class JokeApiService implements JokeAPIServiceContract
+class JokeAPIService implements JokeAPIServiceContract
 {
     private $url = 'https://v2.jokeapi.dev/joke/Programming';
 
