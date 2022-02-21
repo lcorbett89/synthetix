@@ -1,0 +1,14 @@
+<template>
+    <input
+        :value="modelValue"
+        @input="$emit('update:modelValue', $event.target.value)"
+        class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+    />
+</template>
+
+<script>
+export default {
+    props: ["modelValue"],
+    emits: ["update:modelValue"],
+};
+</script>

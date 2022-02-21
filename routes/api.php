@@ -19,6 +19,8 @@ Route::post('login', [AuthController::class, 'login']);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('me', [AuthController::class, 'me'])->name('me');
+    Route::post('logout', [AuthController::class, 'logout']);
     
     Route::apiResource('jokes', JokeController::class)->only('index', 'store', 'show');
+    Route::post('jokes/{joke}/vote', [JokeController::class, 'vote'])->name('jokes.vote');
 });

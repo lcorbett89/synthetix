@@ -9,8 +9,13 @@ class Joke extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'setup',
+        'delivery'
+    ];
+
     public function votes()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class)->withTimestamps();
     }
 }

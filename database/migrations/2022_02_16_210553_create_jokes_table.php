@@ -14,7 +14,7 @@ return new class extends Migration {
     {
         Schema::create('jokes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('joke_id');
+            $table->unsignedInteger('joke_id')->nullable();
             $table->string('setup');
             $table->string('delivery');
             $table->timestamps();

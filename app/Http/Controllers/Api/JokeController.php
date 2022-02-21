@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SubmitJokeRequest;
 use App\Http\Resources\JokeResource;
 use App\Models\Joke;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class JokeController extends Controller
 {
@@ -36,9 +38,13 @@ class JokeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SubmitJokeRequest $request)
     {
-        //
+        $joke = Joke::create($request->validated());
+
+        request()->user()->jokes()->attach($joke->id);
+
+        return new JokeResource($joke->fresh('votes'));
     }
 
     /**
@@ -49,6 +55,19 @@ class JokeController extends Controller
      */
     public function show(Joke $joke)
     {
+        return new JokeResource($joke->load('votes'));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Joke  $joke
+     * @return \Illuminate\Http\Response
+     */
+    public function vote(Joke $joke)
+    {
+        $joke->votes()->syncWithoutDetaching(Auth::user());
+
         return new JokeResource($joke->load('votes'));
     }
 }

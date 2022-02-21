@@ -18,7 +18,7 @@ class JokeResource extends JsonResource
             'id' => $this->id,
             'setup' => $this->setup,
             'delivery' => $this->delivery,
-            'votes_count' => $this->votes_count,
+            'votes_count' => $this->votes_count ?? $this->whenLoaded('votes', $this->votes->count(), 0),
             'votes' => $this->whenLoaded('votes', UserResource::collection($this->votes), [])
         ];
     }

@@ -3,33 +3,34 @@
         <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
             <form class="space-y-6" action="#" method="POST">
                 <p class="text-2xl font-medium text-gray-900">
-                    Sign in to your account
+                    Add a joke of your own
                 </p>
-
                 <div>
-                    <Label for="email">Email address</Label>
+                    <Label for="setup">Setup</Label>
                     <div class="mt-1">
                         <TextInput
-                            v-model="email"
-                            name="email"
-                            type="email"
-                            autocomplete="email"
+                            v-model="setup"
+                            name="setup"
+                            type="text"
                             required
                         />
                     </div>
                 </div>
 
                 <div>
-                    <Label for="password">Password</Label>
+                    <Label for="delivery">Delivery</Label>
                     <div class="mt-1">
                         <TextInput
-                            v-model="password"
-                            name="password"
-                            type="password"
-                            autocomplete="current-password"
+                            v-model="delivery"
+                            name="delivery"
+                            type="text"
                             required
                         />
                     </div>
+                </div>
+
+                <div v-show="error">
+                    <p class="text-red-600 text-sm">{{ error }}</p>
                 </div>
 
                 <div>
@@ -37,7 +38,7 @@
                         type="submit"
                         @click="handleSubmit"
                         class="w-full inline-flex justify-center"
-                        >Sign in</Button
+                        >Submit</Button
                     >
                 </div>
             </form>
@@ -53,27 +54,28 @@ export default {
     components: { TextInput, Button, Label },
     data() {
         return {
-            email: "test@test.com",
-            password: "password",
+            setup: "",
+            delivery: "",
             error: null,
         };
     },
     methods: {
         handleSubmit(e) {
             e.preventDefault();
-            if (this.password.length > 0) {
-                this.$store
-                    .dispatch("login", {
-                        email: this.email,
-                        password: this.password,
-                    })
-                    .then((response) => {
-                        this.$router.push({ name: "vote" });
-                    })
-                    .catch((errors) => {
-                        this.errors = errors;
-                    });
-            }
+
+            this.$store
+                .dispatch("submitJoke", {
+                    setup: this.setup,
+                    delivery: this.delivery,
+                })
+                .then((response) => {
+                    this.setup = "";
+                    this.delivery = "";
+                    this.error = null;
+                })
+                .catch((error) => {
+                    this.error = error.response.data.message;
+                });
         },
     },
 };
